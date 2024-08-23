@@ -111,6 +111,7 @@
             <form action="/register" method="post" th:object="${user}">
                 <label for="userId">아이디 *</label>
                 <input type="text" id="userId" name="userId" th:field="*{userId}"required />
+                <div th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></div>
 
                 <label for="userPw">비밀번호 *</label>
                 <input type="password" id="userPw" name="userPw" th:field="*{userPw}" required/>
@@ -192,5 +193,7 @@
     </div>
     <!-- footer 끝 -->
 </div>
+<script>
+</script>
 </body>
 </html>

@@ -37,8 +37,8 @@ public class CustomSecurityConfig {
                 .formLogin((formLogin) ->
                         formLogin
                                 .loginPage("/login")
-                                .failureUrl("/login?error=true")
                                 .defaultSuccessUrl("/main", true)
+                                .failureUrl("/login?error=true")
                                 .usernameParameter("userId")
                                 .passwordParameter("userPw")
                                 .permitAll()

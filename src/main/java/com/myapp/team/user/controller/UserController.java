@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -27,10 +28,15 @@ public class UserController {
         if (result.hasErrors()) {
             return "register";
         }
+        // 아이디 중복 체크
+        if (userService.findByUserId(user.getUserId()) != null) {
+            // 이미 사용 중인 아이디인 경우 에러 메시지 추가
+            result.rejectValue("userId", "error.user", "이미 사용중인 아이디입니다.");
+            return "register";
+        }
         userService.register(user);
         return "redirect:/register/result";
     }
-
     @GetMapping("/register/result")
     public String registerSuccess() {
         return "registerSuccess";
