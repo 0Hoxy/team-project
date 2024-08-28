@@ -1,14 +1,10 @@
 package com.myapp.team.product;
 
-import com.myapp.team.cart.Cart;
-import com.myapp.team.cart.CartService;
 import com.myapp.team.option.Option;
 import com.myapp.team.option.OptionService;
 import com.myapp.team.user.config.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,14 +131,14 @@ public class ProductController {
         }
         productService.insertProduct(product);
         ra.addFlashAttribute("manage_result", product.getProductName());
-        return "redirect:/prod/list";
+        return "redirect:/admin/prodlist";
     }
 
 
     @PostMapping("/insertOption")
     public String insertOption(Product product, Option option) {
         optionService.insertOption(product, option);
-        return "redirect:/prod/list";
+        return "redirect:/admin/prodlist";
     }
 
     // 상품 수정 페이지
@@ -203,7 +200,7 @@ public class ProductController {
         System.out.println("update test = " + product);
 
         // 제품 목록 페이지로 리다이렉션
-        return "redirect:/prod/list";
+        return "redirect:/admin/prodlist";
     }
 
 
@@ -212,14 +209,14 @@ public class ProductController {
     public String deleteProduct(@PathVariable("id") int id) {
         optionService.deleteOption(id);
         productService.deleteProduct(id);
-        return "redirect:/prod/list";
+        return "redirect:/admin/prodlist";
     }
 
     // 옵션 삭제
     @PostMapping("/option/delete")
     public String deleteOption(int optionNo) {
         optionService.deleteOption(optionNo);
-        return "redirect:/prod/list";
+        return "redirect:/admin/prodlist";
     }
 
 //    // 상품 상세 페이지
@@ -245,6 +242,8 @@ public class ProductController {
         List<Option> options = optionService.selectOptionListByProduct(product.getProductNo());
         product.setOptions(options);
         model.addAttribute("product", product);
+
+        DecimalFormat decFormat = new DecimalFormat("###,###");
 
         if (principal != null) {
             CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();

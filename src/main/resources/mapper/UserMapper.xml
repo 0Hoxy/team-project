@@ -41,4 +41,6 @@
     <select id="findByUserName" parameterType="String">
         SELECT  * FROM user WHERE user_name = #{userName}
     </select>
+
+
 </mapper>

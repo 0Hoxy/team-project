@@ -1,55 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
     <title>Main Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            margin: 50px auto;
-            width: 300px;
-            padding: 20px;
-            /*border: 1px solid #ccc;*/
-            /*border-radius: 5px;*/
-            /*background-color: #f9f9f9;*/
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-        input[type="submit"],[type="button"] {
-            width: 100%;
-            background-color: #b986f8;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover,[type="button"]:hover {
-            background-color: #b986f8;
-        }
-    </style>
-    <script>
-        function goToRegister() {
-            window.location.href = '/register';
-        }
-    </script>
 </head>
 <body>
 <div class="container">
     <div class="maxwidth">
-    <!-- 헤더 시작 -->
+        <!-- 헤더 시작 -->
         <header class="header">
 
             <div class="inner">
@@ -107,23 +67,65 @@
                 </ul>
             </nav>
         </header>
-    <!-- 헤더 끝 -->
+        <!-- 헤더 끝 -->
 
 
-    <!-- 메인 컨텐츠 시작 -->
-    <main class="main-content">
-        <form th:action="@{/login}" method="post">
-            <h1 style="text-align: center">로그인</h1>
-            <br>
-            <input type="text" id="userId" name="userId" placeholder="아이디" required >
-            <input type="password" id="userPw" name="userPw" placeholder="패스워드" required >
-            <input type="submit" value="로그인">
-            <input type="button" value="회원가입" onclick="goToRegister()">
-        </form>
-    </main>
+        <!-- 메인 컨텐츠 시작 -->
+        <main class="main-content">
+            <div class="main">
+                <div class="userup">
+                    <div class="basic-information">
+
+                        <div class="main-frame">
+                            <div class="questionhead">
+                                <div class="questionlist">문의 내역</div>
+                            </div>
+                            <div class="table-head">
+                                <div>질문 번호</div>
+                                <div>유저 번호</div>
+                                <div>제품 번호</div>
+                                <div>질문 제목</div>
+                                <div>질문 내용</div>
+                            </div>
+                            <div class="user-frame" th:each="question : ${questionList}">
+                                    <div class="bar"  th:text="${question.questionNo}">1234</div>
+                                    <div class="bar2" th:text="${question.userNo}">1</div>
+                                    <div class="bar3" th:text="${question.productNo}">아 달라고</div>
+                                    <div class="bar4" th:text="${question.questionTitle}">아 그냥 줘</div>
+                                    <div class="bar5" th:text="${question.questionContent}">11</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-side-bar">
+                    <div class="product">
+                        <div class="prod-manage">
+                            <div class="my">MY 회원정보</div>
+                        </div>
+                        <a class="prod-list" th:href="@{../user/{userNo}(userNo =${user.userNo})}">
+                            <img class="img-member-default-1" src="/images/admin/image-10.png"/>
+                            <div class="div8">정보 수정</div>
+                        </a>
+                        <div class="order-list">
+                            <img
+                                    class="_9081007-list-details-icon-1"
+                                    src="/images/_9081007-list-details-icon-10.png"
+                            />
+                            <div class="div9">주문 내역</div>
+                        </div>
+                        <a class="question-list" th:href="@{../qlist/{userNo}(userNo =${user.userNo})}">
+                            <img class="image-3" src="/images/image-30.png"/>
+                            <div class="div10">문의내역</div>
+                        </a>
+                    </div>
+                    <div class="admin-welcome"><span th:text="${user.userName}+ '님의 마이페이지'"></span></div>
+                </div>
+            </div>
+
+
+        </main>
     </div>
     <!-- maxwidth -->
-
 
 
     <!-- footer 시작 -->
@@ -170,7 +172,8 @@
                             <span class="shop_blank"></span> Owner. 서영호
                         </p>
                         <p>Business License. 712-35-00653</p>
-                        <br><p>Tel. 010-8332-4726</p>
+                        <br>
+                        <p>Tel. 010-8332-4726</p>
                         <p>Master. 서영호<span class="shop_blank"></span>E-mail. Ho@naver.com</p>
                         <p>Add. 31572 부산광역시 부산진구 (영호동)</p>
                         <p>1층</p>
@@ -182,5 +185,14 @@
     </div>
     <!-- footer 끝 -->
 </div>
+<script>
+    function confirmDelete() {
+        if (confirm("정말로 탈퇴하시겠습니까?")) {
+            document.getElementById("deleteForm").submit();
+        } else {
+            alert("계정 삭제가 취소되었습니다.");
+        }
+    }
+</script>
 </body>
 </html>

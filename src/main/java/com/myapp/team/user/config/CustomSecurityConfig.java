@@ -30,15 +30,15 @@ public class CustomSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/admin/**","/answer/**","/images/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/**","/answer/**","/").hasAuthority("ADMIN")
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((formLogin) ->
                         formLogin
                                 .loginPage("/login")
+                                .defaultSuccessUrl("/main", true)
                                 .failureUrl("/login?error=true")
-                                .defaultSuccessUrl("/", true)
                                 .usernameParameter("userId")
                                 .passwordParameter("userPw")
                                 .permitAll()
@@ -46,7 +46,7 @@ public class CustomSecurityConfig {
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
                         .invalidateHttpSession(true)
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/main")
                         .permitAll()
                 );
 
@@ -56,7 +56,7 @@ public class CustomSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) ->
-                web.ignoring().requestMatchers("/css/**", "/js/**");
+                web.ignoring().requestMatchers("/css/**", "/js/**", "/images/**");
     }
 
     @Bean
